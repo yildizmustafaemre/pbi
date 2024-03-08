@@ -1,0 +1,50 @@
+DimDate = 
+ADDCOLUMNS (
+CALENDAR (
+DATE ( 2020, 1, 1 ), --tarih tablosunun başlangıç tarihi
+DATE ( 2025, 12, 31 ) --tarih tablosunun bitiş tarihi
+),
+"DateAsInteger", FORMAT ( [Date], "YYYYMMDD" ),
+"Year", YEAR ( [Date] ),
+"YearasInt", INT( YEAR ( [Date] )),
+"ShortYear", INT ( FORMAT ( [Date], "YY" ) ),
+"QuarterNo", INT ( FORMAT ( [Date], "Q" ) ),
+"Quarter", "Q" & FORMAT ( [Date], "Q" ),
+"YearQuarter", FORMAT ( [Date], "YYYY" ) & "/Q"& FORMAT ( [Date], "Q" ),
+"YearQuarterAsInt", INT ( FORMAT ( [Date], "YYYYQ" ) ),
+"MonthNo", INT ( FORMAT ( [Date], "MM" ) ),
+"YearMonthAsInt", INT ( FORMAT ( [Date], "YYYYMM" ) ),
+"YearMonth", FORMAT ( [Date], "YYYY/MM" ),
+"YearMonthName", FORMAT ( [Date], "mmm YYYY" ),
+"MonthNameShort", FORMAT ( [Date], "mmm" ),
+"MonthNameLong", FORMAT ( [Date], "mmmm" ),
+"MonthNameSorted", RIGHT("0" & INT ( FORMAT ( [Date], "MM" ) ),2) &"-" & FORMAT ( [Date], "mmm" ),
+"WeekOfYearAsInt", 100 * YEAR ( [Date] ) + INT ( WEEKNUM ( [Date], 2 ) ),
+"WeekOfYear", YEAR ( [Date] ) & "/" & INT ( WEEKNUM ( [Date], 2 ) ),
+"WeekNoOfYear", INT ( WEEKNUM ( [Date], 2 ) ),
+"DayNo", INT ( FORMAT ( [Date], "DD" ) ),
+"DayNameOfWeek", FORMAT ( [Date], "dddd" ),
+"DayNameOfWeekShort", FORMAT ( [Date], "ddd" ),
+"DayNoOfWeek", WEEKDAY ( [Date], 2 ),
+"Today", FORMAT ( TODAY (), "DD/MM/YYYY" ),
+"IsInCurrentDay", SWITCH ( TRUE (), [Date] = TODAY (), 1, 0 ),
+"IsInCurrentWeek",
+SWITCH ( TRUE (),
+100 * YEAR ( [Date] ) + INT ( WEEKNUM ( [Date], 2 ) )
+= 100 * YEAR ( TODAY () ) + INT ( WEEKNUM ( TODAY (), 2 ) ), 1, 0
+),
+"IsInCurrentMonth",
+SWITCH ( TRUE (),
+FORMAT ( [Date], "YYYYMM" ) = FORMAT ( TODAY (), "YYYYMM" ), 1, 0
+),
+"IsInCurrentYear",
+SWITCH ( TRUE (),
+FORMAT ( [Date], "YYYY" ) = FORMAT ( TODAY (), "YYYY" ), 1, 0
+),
+"IsInPreviousYear",
+SWITCH ( TRUE (),
+INT(FORMAT ( [Date], "YYYY" )) = INT(FORMAT ( TODAY (), "YYYY" )) -1, 1, 0
+),
+"WeekStarting", [Date] - ( WEEKDAY ( [Date], 2 ) - 1 ),
+"WeekEnding", [Date] + ( 7 - WEEKDAY ( [Date], 2 ) )
+)
